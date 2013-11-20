@@ -38,17 +38,15 @@ object Token extends Logger {
 
   object Integer extends TokenType
   object Real extends TokenType
-  object True extends TokenSymbol("true")
-  object False extends TokenSymbol("false")
-  object Null extends TokenSymbol("null")
+  object True extends TokenType
+  object False extends TokenType
+  object Null extends TokenType
   object DataLine extends TokenType
-  object HereDoc extends TokenType
   object BlankLine extends TokenType
   object NodeValue extends TokenType
 
   object Hyphen extends TokenSymbol("-")
   object Separator extends TokenSymbol("-") // Appears only after Hyphen
-  object HereDocSep extends TokenSymbol("--")
   object LineComment extends TokenSymbol("#")
 
   object Preamble extends TokenSymbol("%")

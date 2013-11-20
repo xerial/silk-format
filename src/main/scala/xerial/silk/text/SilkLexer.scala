@@ -31,7 +31,6 @@ import xerial.core.collection.CyclicArray
 
 object SilkLexer {
   object INIT extends SilkLexerState
-  object HERE_DOC extends SilkLexerState
   object NODE_NAME extends SilkLexerState
   object NODE_VALUE extends SilkLexerState
   object ATTRIBUTE_NAME extends SilkLexerState
@@ -184,7 +183,6 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
         case ATTRIBUTE_VALUE => mToken
         case NODE_VALUE => mNodeValue
         case QNAME => mQName; state = NODE_NAME
-        case HERE_DOC => mHereDoc
       }
     }
 
@@ -291,6 +289,11 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
     }
   }
 
+  def mBoolean {
+
+
+  }
+
   def mString {
     m('"')
     @tailrec def loop {
@@ -330,10 +333,7 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
       }
       else {
         consume
-        LA1 match {
-          case '-' => consume; emit(Token.HereDocSep); nextLineState = HERE_DOC
-          case _ => emit(Token.Hyphen)
-        }
+        emit(Token.Hyphen)
         state = NODE_NAME
       }
     //    case '>' => consume; emit(Token.SeqNode); state = NODE_NAME
@@ -453,26 +453,5 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
     emitTrimmed(Token.NodeValue)
   }
 
-  def mHereDoc {
-    mWhiteSpace_s
-
-    var toContinue = true
-    if (LA1 == '-') {
-      consume
-      if (LA1 == '-') {
-        consume;
-        matchUntilEOL;
-        emit(Token.HereDocSep)
-        state = INIT
-        nextLineState = INIT
-        toContinue = false
-      }
-    }
-
-    if (toContinue) {
-      matchUntilEOL;
-      emitWholeLine(Token.HereDoc)
-    }
-  }
 
 }
