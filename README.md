@@ -2,41 +2,50 @@ Silk Text Format
 ====
 
 Silk text format is a compact and flexible columnar data format.
+ 
+## Specification  (draft)
 
-## Specification 
+### Header
 
-### Schema definition
+* Specifies silk format version
 
 ```
-%silk version:1.0
-%record person(id:int, name) 
-%record log(date, level, json)
-%record fruits table:map[string, string]
+%silk - version:1.0
 ```
 
 #### Primitive data types
 
-If no type name is given in a record, the default data type becomes `string`.
+If no type is specified in a record definition, the default data type becomes `string`.
 
 * string (UTF8 encoding)
 * int
 * float
 * double
 * boolean
-
+* array[A] (fixed-length array of type A)
+```
+%record (id:int, name, phone*)
+```
+* map[K, V] (K -> V: key-value pair)
+* seq[A] (sequence of data of type A)
+* json
 
 ### Line format
 
 Silk represents a record using tab-separated format. 
 
 ```
+%record person(id:int, name) 
+
 -person
 1	leo
 2	yui
 ```
 
 ```
--fruits table
+%record fruit_table:map[string, string]
+
+-fruit_table
 A	apple
 B	banana
 C	coconut
@@ -46,11 +55,22 @@ C	coconut
 #### Embedding JSON in a column
 
 ```
+%record log(date, level, param:json)
+
 -log
 2013-11-20	info	{"message":"hello silk"}
 2013-11-20	debug	{"result":"success", "elapsed time":12.3}
 ```
 
+#### In-line representation of nested records
+```
+%record person(id:int, name, address:address)
+%record address(address, phone, country)
+
+-person
+1	leo	(ABC Street, XXX-XXXX, Japan)
+2	yui	(YYY Town, ZZZ-ZZZZ, US)
+```
 
 ### Indantation format
 
@@ -68,12 +88,23 @@ descriptions, etc.
 
 `record.silk`
 ```
-%record 
-```
-
-```
 %silk version:1.0
+%record person - id:int, name
+```
+
+```
 %import "record.silk"
+
+-person
+1	leo
+2	yui
 ```
 
 
+### Context line
+
+Context line is a meta data for annotating or grouping records
+
+```
+> imported - type:Apache log, date:2013-11-20
+```
