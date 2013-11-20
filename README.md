@@ -230,6 +230,7 @@ You can split the above weblog into schema and log record files:
 `weblog.silk`
 ```
 %record weblog - host, ident, user, time, req, status, size:int, referer, ua
+>context - description:"Imported from Apache Logs", server:sx03
 -weblog
 %import "weblog.tsv"
 ```
