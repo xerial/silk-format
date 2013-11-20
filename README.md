@@ -17,7 +17,7 @@ Starts with `#`
 Preamble line starts with `%`:
 
 #### Header 
-Specifies silk format version
+Specifies a silk format version.
 ```
 %silk - version:1.0
 ```
@@ -26,7 +26,8 @@ Specifies silk format version
 ```
 # Detailed definition
 %record person(id:int, name:string)
-# Simplified syntax. You can use `-` instead of wrapping parameters with parentheses. 
+
+# Simplified record syntax. You can use `-` instead of wrapping parameters with parentheses. 
 # If the type name is ommitted, the default is string type
 %record person - id:int, name
 ```
@@ -44,7 +45,7 @@ If no type is specified in a record definition, the default data type becomes `s
 
 ```
 %record person - id:int, name, phone:string*
-# string tyep can be omitted
+# string type can be omitted
 %record person - id:int, name, phone*
 ```
 
@@ -67,9 +68,6 @@ B	  1
 C	  2
 ```
 
-* Stream type. 
-  * Uses when the length of array is large
-
 ```
 %record read - qname, flag:int, chr:alnum, start:int, score:int, cigar, mname, mstart:int, isize:int, qseq, qv, tag:json
 -read
@@ -78,12 +76,12 @@ read_28701_28881_323b        147        chr20        28834        30	35M        
 ```
  
 * `json` 
-  * Silk uses an extended JSON format that can use QName and Name token instead of double-quoted `"(String)"` 
+  * Silk uses an extended JSON format that can use QName (alphabet and number characters with spaces) token instead of double-quoted `"(String)"` 
 * `optional`
 
 ### Line format
 
-Silk represents a record using tab-separated format. 
+Silk represents a list of records using tab-separated format. The line starting with `-` represents a data type name to be described.
 
 ```
 %record person(id:int, name) 
@@ -157,7 +155,7 @@ It is equivalent to write as:
 
 -log
 @info  log	2013-11-20	system started
-@error log	2013-11-20	error occurred	NPE
+@error log	2013-11-20	error occurred	NullPointerException
 ```
 
 When the line starts with `@`, the first column is a type description. The remaining part is tab-separated values.
@@ -176,6 +174,9 @@ descriptions, etc.
 
 ### Import statment
 
+When silk format becomes large, or you need to share the schema definition, use `import` to 
+include another silk data.
+
 `record.silk`
 ```
 %silk version:1.0
@@ -193,8 +194,16 @@ descriptions, etc.
 
 ### Context line
 
-Context line is a meta data for annotating or grouping records
+Context line starting with `>` is a meta data for annotating or grouping records.
 
 ```
-> imported - type:Apache log, date:2013-11-20
+> server - name:sv01, type:server log
+-log
+@info 2013-11-20	system started
+@info 2013-11-20	received a task request
+@error 2013-11-20	error occurred	NullPointerException
+> client - name:sv100, type:client log
+-log
+@info 2013-11-20	client has started
+@info 2013-11-20	client sending a task to server
 ```
