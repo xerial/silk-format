@@ -163,7 +163,7 @@ read_28701_28881_323b        147        chr20        28834        30	35M        
 @error 2013-11-20	error occurred	NullPointerException
 ```
 
-When the line starts with `@`, the first column is a type description. The remaining part is tab-separated values of the collesponding type.
+When the line starts with `@`, the first column is a type description. The remaining part is tab-separated values of the corresponding type.
 
 ### Indentation format
 
