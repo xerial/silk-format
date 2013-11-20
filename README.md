@@ -48,23 +48,15 @@ If no type is specified in a record definition, the default data type becomes `s
 # string type can be omitted
 %record person - id:int, name, phone*
 ```
-   * Example: An array of double type
-
-```
-%record point - value:double[2]
--point
-0 1
-2 3
-```
 
 * Map type `map[K,V]`
 
 ```
 %record property:map[string, int]
 -property 
-A	  0
-B	  1
-C	  2
+A 0
+B 1
+C 2
 ```
 
  
