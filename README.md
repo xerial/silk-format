@@ -41,7 +41,6 @@ If no type is specified in a record definition, the default data type becomes `s
 * `float`
 * `double`
 * `boolean`
-* `alnum`  alphabet follwed by a number (or string). Commonly-used in genome sciences (e.g., chr1, chrX)
 * Array type
 
 ```
