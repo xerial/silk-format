@@ -467,7 +467,7 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
   // qname first:  Alphabet | Dot | '_' | At | Sharp
   private def isQNameFirst(c: Int) = (c == '@' || c == '#' || c == '.' || c == '_' || isAlphabet(c))
   private def isQNameChar(c: Int) = (c == '.' || c == '_' || isAlphabet(c) || isDigit(c))
-  private def isNameChar(c: Int) = c == ' ' || isQNameChar(c)
+  private def isNameChar(c: Int) = c == ' ' || c == '-' || isQNameChar(c)
   private def isValueChar(c:Int) = c != '(' && c != ')' && c != ',' && c != ':' && c != '@' && c != '#' && c != '"'
 
   def mQNameFirst = {

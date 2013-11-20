@@ -45,7 +45,7 @@ object Grammar extends Logger {
       val t = in.LA1
       trace(s"eval $tt, LA1:$t")
       if (t.tokenType == tt) {
-        debug(s"match ${t.tokenType}, LA1:$t")
+        debug(s"match LA1:$t")
         Right(in.consume)
       }
       else
