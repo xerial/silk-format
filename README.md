@@ -42,16 +42,21 @@ If no type is specified in a record definition, the default data type becomes `s
 * `double`
 * `boolean`
 * Array type
+
 ```
 %record person - id:int, name, phone:string*
 # string tyep can be omitted
 %record person - id:int, name, phone*
+```
 
 # Array of double type
+
 ```
 %record point - value:double[2]
 ```
+
 * Map type
+
 ```
 %record property:map[string, int]
 -property 
@@ -59,8 +64,10 @@ A	  0
 B	  1
 C	  2
 ```
+
 * Stream type. 
   * Uses when the length of array is large
+
 ```
 %record read - qname, flag:int, chr:alnum, start:int, score:int, cigar, mname, mstart:int, isize:int, qseq, qv, tag:_
 -read
