@@ -38,12 +38,12 @@ object SilkLexer {
   object QNAME extends SilkLexerState
 
   def parseLine(silk: CharSequence): IndexedSeq[SilkToken] = {
-    val (tokens, nextState) = new SilkLineLexer(silk, INIT).scan
+    val tokens = new SilkLineLexer(silk, INIT).scan
     tokens
   }
 
   def tokenStream(silk: CharSequence): TokenStream = {
-    val (tokens, nextState) = new SilkLineLexer(silk, INIT).scan
+    val tokens = new SilkLineLexer(silk, INIT).scan
     new TokenStream(tokens)
   }
 
@@ -82,7 +82,6 @@ class SilkLexer(reader: LineReader) extends Logger {
   def this(in: Reader) = this(LineReader(in))
 
   private val PREFETCH_SIZE = 10
-  private var state: SilkLexerState = INIT
   private var nProcessedLines = 0L
   private val tokenQueue = new CyclicArray[SilkToken]
 
@@ -131,11 +130,10 @@ class SilkLexer(reader: LineReader) extends Logger {
     // TODO line-based error recovery
     for (i <- 0 until prefetch_lines) {
       for (line <- reader.nextLine) {
-        val lexer = new SilkLineLexer(line, state)
-        val (tokens, nextState) = lexer.scan
+        val lexer = new SilkLineLexer(line, INIT)
+        val tokens = lexer.scan
         nProcessedLines += 1
         tokens foreach (tokenQueue.append(_))
-        state = nextState
       }
     }
   }
@@ -155,7 +153,6 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
   private val scanner = LineReader(line)
   private var posInLine: Int = 0
   private var state = initialState
-  private var nextLineState: SilkLexerState = INIT
   private val tokenQueue = IndexedSeq.newBuilder[SilkToken]
 
   private def consume {
@@ -172,7 +169,7 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
   private def emitString(t: TokenType): Unit = emitWithText(t, scanner.selected(1))
   private def emitWholeLine(t: TokenType): Unit = emitWithText(t, scanner.selectedFromFirstMark)
 
-  def scan: (IndexedSeq[SilkToken], SilkLexerState) = {
+  def scan: IndexedSeq[SilkToken] = {
     while (!scanner.reachedEOF) {
       scanner.resetMarks
       scanner.mark
@@ -186,7 +183,7 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
       }
     }
 
-    (tokenQueue.result(), nextLineState)
+    tokenQueue.result()
   }
 
   private def LA1 = scanner.LA(1)
@@ -344,7 +341,7 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
     case '\\' =>
       val c2 = scanner.LA(2)
       if (c2 == '-') {
-        consume;
+        consume
         scanner.mark
       } // escaped '-'
       matchUntilEOL
@@ -358,12 +355,12 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
 
     def transitCh(ch: Int, nextState: SilkLexerState): Unit = transit(Token.toSymbol(ch), nextState)
     def transit(t: TokenSymbol, nextState: SilkLexerState): Unit = {
-      consume;
-      emit(t);
+      consume
+      emit(t)
       state = nextState
     }
     def noTransition(ch: Int): Unit = {
-      consume;
+      consume
       emit(ch)
     }
 

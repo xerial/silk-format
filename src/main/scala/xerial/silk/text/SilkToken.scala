@@ -65,7 +65,7 @@ object Token extends Logger {
   object LSquare extends TokenSymbol("<")
   object RSquare extends TokenSymbol(">")
 
-  val symbols = Seq(Preamble, At, Colon, Comma, Asterisk, Plus, Question, True, False, Null, LParen, RParen, LBracket, RBracket, LBrace, RBrace, LSquare, RSquare)
+  val symbols = Seq(Preamble, At, Colon, Comma, Asterisk, Plus, Question, LParen, RParen, LBracket, RBracket, LBrace, RBrace, LSquare, RSquare)
   private val symbolTable : Map[Int, TokenSymbol] = symbols.map{ s => s.symbol.charAt(0).toInt -> s }.toMap
   
   def toSymbol(s:Int) : TokenSymbol = {
