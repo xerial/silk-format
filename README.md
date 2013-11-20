@@ -17,18 +17,18 @@ Silk text format is a compact and flexible columnar data format.
 
 If no type is specified in a record definition, the default data type becomes `string`.
 
-* string (UTF8 encoding)
-* int
-* float
-* double
-* boolean
-* array[A] (fixed-length array of type A)
+* `string` (UTF8 encoding)
+* `int`
+* `float`
+* `double`
+* `boolean`
+* `array[A]` (fixed-length array of type A)
 ```
 %record (id:int, name, phone*)
 ```
-* map[K, V] (K -> V: key-value pair)
-* seq[A] (sequence of data of type A)
-* json
+* `map[K, V]` (K -> V: key-value pair)
+* `seq[A]` (sequence of data of type A)
+* `json`
 
 ### Line format
 
