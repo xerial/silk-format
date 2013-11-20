@@ -52,6 +52,9 @@ If no type is specified in a record definition, the default data type becomes `s
 
 ```
 %record point - value:double[2]
+-point
+0 1
+2 3
 ```
 
 * Map type
@@ -74,7 +77,8 @@ read_28833_29006_6945        99        chr20        28833        20	10M1D25M    
 read_28701_28881_323b        147        chr20        28834        30	35M        =        28701        -168	ACCTATATCTTGGCCTTGGCCGATGCGGCCTTGCA        <<<<<;<<<<7;:<<<6;<<<<<<<<<<<<7<<<<	{MF:18, Nm:0, H0:1, H1:0, RG:L2}
 ```
  
-* `json`
+* `json` 
+  * Silk uses an extended JSON format that can use QName and Name token instead of double-quoted `"(String)"` 
 * `optional`
 
 ### Line format
@@ -147,15 +151,16 @@ It is equivalent to write as:
 
 ```
 %record log - date, message
-%record error - _:log, cause
+# Embedeing log record parameters into info/error records
 %record info: _:log
+%record error - _:log, cause
 
 -log
 @info  log	2013-11-20	system started
 @error log	2013-11-20	error occurred	NPE
 ```
 
-
+When the line starts with `@`, the first column is a type description. The remaining part is tab-separated values.
 
 ### Indantation format
 
