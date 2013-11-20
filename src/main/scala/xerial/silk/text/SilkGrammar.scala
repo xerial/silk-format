@@ -26,6 +26,15 @@ object SilkGrammar extends Grammar with Logger {
   "nodeParamSugar" := Separator ~ repeat("param", Comma)
   "nodeParams" := LParen ~ repeat("param", Comma) ~ RParen ~ option(Colon ~ NodeValue)
   "param" := Name ~ option(Colon ~ "value")
-  "value" := NodeValue | Name | QName | Token.String | Integer | Real | "tuple"
+  "value" := NodeValue | Name | QName | Token.String | Integer | Real | "boolean" | Null | "tuple"
   "tuple" := LParen ~ repeat("value", Comma) ~ RParen
+  "boolean" := True | False
+
+  // Extended JSON Grammar
+  "json" := "jsonObject" | "jsonArray"
+  "jsonValue" := "jsonObject" | "jsonArray" | String | Integer | Real | "boolean"
+  "jsonArray" := LBracket ~ repeat("jsonValue", Comma) ~ RBracket
+  "jsonObject" := LBrace ~ repeat("jsonKeyValue", Comma) ~ RBrace
+  "jsonKeyValue" := Name ~ Colon ~ "jsonValue"
+
 }

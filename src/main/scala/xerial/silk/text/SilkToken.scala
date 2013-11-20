@@ -38,6 +38,9 @@ object Token extends Logger {
 
   object Integer extends TokenType
   object Real extends TokenType
+  object True extends TokenSymbol("true")
+  object False extends TokenSymbol("false")
+  object Null extends TokenSymbol("null")
   object DataLine extends TokenType
   object HereDoc extends TokenType
   object BlankLine extends TokenType
@@ -57,12 +60,14 @@ object Token extends Logger {
   object Question extends TokenSymbol("?")
   object LParen extends TokenSymbol("(")
   object RParen extends TokenSymbol(")")
+  object LBrace extends TokenSymbol("{")
+  object RBrace extends TokenSymbol("}")
   object LBracket extends TokenSymbol("[")
   object RBracket extends TokenSymbol("]")
   object LSquare extends TokenSymbol("<")
   object RSquare extends TokenSymbol(">")
 
-  val symbols = Seq(Preamble, At, Colon, Comma, Asterisk, Plus, Question, LParen, RParen, LBracket, RBracket, LSquare, RSquare)
+  val symbols = Seq(Preamble, At, Colon, Comma, Asterisk, Plus, Question, True, False, Null, LParen, RParen, LBracket, RBracket, LBrace, RBrace, LSquare, RSquare)
   private val symbolTable : Map[Int, TokenSymbol] = symbols.map{ s => s.symbol.charAt(0).toInt -> s }.toMap
   
   def toSymbol(s:Int) : TokenSymbol = {
