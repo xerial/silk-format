@@ -5,12 +5,31 @@ Silk text format is a compact and flexible columnar data format.
  
 ## Specification  (draft)
 
-### Header
+### Comment-line
 
-* Specifies silk format version
+Starts with `#`
 
 ```
+# This is a comment line
+```
+
+### Preambles
+Preamble line starts with `%`:
+
+#### Header 
+Specifies silk format version
+```
 %silk - version:1.0
+```
+#### Record schema definition
+
+```
+# Detailed definition
+%record person(id:int, name:string)
+
+# Simplified syntax. You can use `-` instead of wrapping with parentheses. 
+# If type name is ommitted, the default is string type
+%record person - id:int, name
 ```
 
 #### Primitive data types
