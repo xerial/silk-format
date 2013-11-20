@@ -92,7 +92,7 @@ C	coconut
 #### Embedding (extended) JSON in a column
 
 ```
-%record log(date, level, param:json)
+%record log - date, level, param:json
 
 -log
 2013-11-20	info	{message:"hello silk"}
@@ -116,7 +116,7 @@ This is equivalent to write as follows:
 
 #### Embedding an array into a column
 ```
-%record check_sheet(pid:int, answer:boolean*)
+%record check_sheet - pid:int, answer:boolean*
 -check_sheet
 1	[true, true, false, false, true]
 2	[true, false, false, true, true]
@@ -125,8 +125,8 @@ This is equivalent to write as follows:
 #### In-line representation of nested records
 
 ```
-%record person(id:int, name, address:address)
-%record address(address, phone, country)
+%record person - id:int, name, address:address
+%record address - address, phone, country
 
 -person
 1	leo	["ABC Street", "XXX-XXXX", "Japan"]
