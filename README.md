@@ -199,12 +199,12 @@ include another silk data.
 Context line starting with `>` is a meta data for annotating or grouping records.
 
 ```
-> server - name:sv01, type:server log
+>server - name:sv01, type:server log
 -log
 @info 2013-11-20	system started
 @info 2013-11-20	received a task request
 @error 2013-11-20	error occurred	NullPointerException
-> client - name:sv100, type:client log
+>client - name:sv100, type:client log
 -log
 @info 2013-11-20	client has started
 @info 2013-11-20	client sending a task to server
