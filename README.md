@@ -41,7 +41,7 @@ If no type is specified in a record definition, the default data type becomes `s
 * `float`
 * `double`
 * `boolean`
-* Array type
+* Array type `(type name)*`
 
 ```
 %record person - id:int, name, phone:string*
@@ -57,7 +57,7 @@ If no type is specified in a record definition, the default data type becomes `s
 2 3
 ```
 
-* Map type
+* Map type `map[K,V]`
 
 ```
 %record property:map[string, int]
@@ -69,21 +69,15 @@ C	  2
 
  
 * `json` 
-  * Silk uses an extended JSON format that can use QName (alphabet and number characters with spaces) token instead of double-quoted `"(String)"` 
-  * Embedding tags in a column
+  * Silk uses an extended JSON format that can use QName (alphabet and number characters with spaces) token instead of double-quoted `"String"` 
 
-```
-%record read - qname, flag:int, chr:alnum, start:int, score:int, cigar, mname, mstart:int, isize:int, qseq, qv, tag:json
--read
-read_28833_29006_6945        99        chr20        28833        20	10M1D25M        =        28993        195	AGCTTAGCTAGCTACCTATATCTTGGTCTTGGCCG        <<<<<<<<<<<<<<<<<<<<<:<9/,&,22;;<<< {MF:130, Nm:1, H0:0, H1:0, RG:L1}
-read_28701_28881_323b        147        chr20        28834        30	35M        =        28701        -168	ACCTATATCTTGGCCTTGGCCGATGCGGCCTTGCA        <<<<<;<<<<7;:<<<6;<<<<<<<<<<<<7<<<<	{MF:18, Nm:0, H0:1, H1:0, RG:L2}
-```
-
-* `optional`
-
+* `option[A]` or `A?`
+   * Optional appearances of a parameter value, allowing a column to be empty.
+    
 ### Line format
 
-Silk represents a list of records using tab-separated format. The line starting with `-` represents a data type name to be described.
+Silk represents a list of records using tab-separated format. The line starting with `-` represents a data type name to be described. The following lines
+describe records line by line in a tab-separated format.
 
 ```
 %record person(id:int, name) 
@@ -145,6 +139,15 @@ This is equivalent to write as follows:
 -person
 1	leo	["ABC Street", "XXX-XXXX", "Japan"]
 2	yui	["YYY Town", "ZZZ-ZZZZ", "US"]
+```
+
+#### Embedding json data in a column
+
+```
+%record read - qname, flag:int, chr:alnum, start:int, score:int, cigar, mname, mstart:int, isize:int, qseq, qv, tag:json
+-read
+read_28833_29006_6945        99        chr20        28833        20	10M1D25M        =        28993        195	AGCTTAGCTAGCTACCTATATCTTGGTCTTGGCCG        <<<<<<<<<<<<<<<<<<<<<:<9/,&,22;;<<< {MF:130, Nm:1, H0:0, H1:0, RG:L1}
+read_28701_28881_323b        147        chr20        28834        30	35M        =        28701        -168	ACCTATATCTTGGCCTTGGCCGATGCGGCCTTGCA        <<<<<;<<<<7;:<<<6;<<<<<<<<<<<<7<<<<	{MF:18, Nm:0, H0:1, H1:0, RG:L2}
 ```
 
 #### Polymorphic types
