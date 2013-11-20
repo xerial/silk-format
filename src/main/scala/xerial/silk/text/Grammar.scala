@@ -7,8 +7,8 @@
 
 package xerial.silk.text
 
-import xerial.silk.text.parser.{TokenType, TokenStream}
 import xerial.core.log.Logger
+import scala.annotation.tailrec
 
 
 object Grammar extends Logger {

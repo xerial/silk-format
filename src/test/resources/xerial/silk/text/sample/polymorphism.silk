@@ -1,0 +1,79 @@
+%silk - version:1.0
+
+# Trait represents a common class of polymorphic classes
+%record Track - id:int[auto], name
+%record SAMTrack - _:Track, db path
+%record BEDTrack - _:Track, bed file
+
+# Instances of records can use canonical names for node names
+-sam track - name:sample read, pack:true, db path:"db/read.db"
+-bed track - name:bed track, bed file:"db/gene.bed"
+
+# query syntax:
+#  
+# track.map { |t| 
+#  switch t.type {
+#    case r:SAMTrack 
+#      => "id:{1}, name:{2}, db path:{3}", r.id, r.name, r.db_path 
+#    case r:BEDTrack => ...
+#    case r:_ 
+#      => "id:{1}, name:{2}".format(r.id, r.name) 
+#  }
+# }
+
+# Entering the bio namespace
+%namespace bio
+
+# Entering the namespace with the full name
+%namespace bio.read
+
+
+# define a record
+%record Read - name:string
+
+# define read records
+%record Locus - chr:alnum, start:int
+%record Seq - seq:string, qv:string
+
+# mixin of classes
+%record SingleEnd - _:Read, _:Locus
+
+# schema [(type), name, chr, start]
+%record PairedEnd - _:Read, isize:int, first:SingleEnd, second:SingleEnd
+# schema [(type), name, first, second, isize]
+%record StrobeRead - _:Read, fragment:SingleEnd*
+
+%record ReadSet - read:Read*
+
+# Use type parameters for describing polymorphic objects
+
+# One-liner representation of polymorphic objects 
+# When the actual type of the class cannot be determined from node name, 
+# type values (enclosed in []) will be inserted in tuples.
+-readset
+ -read
+[paired end]	pe1	137	pe1/1,chr1,13413	pe1/2,chr1,13550	
+[strobe read]	st1	(st1_1,chr2,10),(st2_2,chr2, 1034),(st3_3,chr2,2040)
+
+
+# block representation
+-readset
+ -read
+[paired_end]	pe1	137	pe1/1,chr1,13413	pe1/2,chr1,13550
+[strobe_read]	st1
+st1_1	chr2	10
+st2_2	chr2	1034
+st3_3	chr2	2040
+
+%class result(state, read:read)
+# single-line. Columns of type names will be skipped when counting tuple indexes
+-result
+mapped	[paired_end]	pe1,137,(pe1/1,chr1,13413),(pe1/2,chr1,13550)
+mapped	[single_end]	se1,chr2,300
+
+# block representation
+-result
+mapped	[paired_end]	pe1	137	pe1/1	chr1	13413	pe1/2	chr1	13550
+mapped	[single_end]	se1	chr2	300
+
+
