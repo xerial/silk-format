@@ -156,8 +156,8 @@ It is equivalent to write as follows:
 %record error - _:log, cause
 
 -log
-@info  log	2013-11-20	system started
-@error log	2013-11-20	error occurred	NullPointerException
+@info  2013-11-20	system started
+@error 2013-11-20	error occurred	NullPointerException
 ```
 
 When the line starts with `@`, the first column is a type description. The remaining part is tab-separated values of the collesponding type.
