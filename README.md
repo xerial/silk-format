@@ -26,8 +26,6 @@ Specifies silk format version
 ```
 # Detailed definition
 %record person(id:int, name:string)
-```
-
 # Simplified syntax. You can use `-` instead of wrapping parameters with parentheses. 
 # If the type name is ommitted, the default is string type
 %record person - id:int, name
