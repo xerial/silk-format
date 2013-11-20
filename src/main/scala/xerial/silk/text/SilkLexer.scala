@@ -190,14 +190,13 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
 
   def mIndent: Int = {
     @tailrec def loop(len: Int): Int = LA1 match {
-      case ' ' => {
-        consume;
+      case ' ' =>
+        consume
         loop(len + 1)
-      }
-      case '\t' => {
-        consume;
+      case '\t' =>
+        consume
+        // TAB is 4 white spaces
         loop(len + 4)
-      } // TAB is 4 white spaces
       case _ => len
     }
     loop(0)
@@ -269,14 +268,14 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
       // negative number
       val c2 = scanner.LA(2)
       if (isDigit(c2)) {
-        consume;
+        consume
         c = c2
       }
     }
 
     if (c == '0') consume
     else if (c >= '1' && c <= '9') {
-      consume;
+      consume
       mDigit_s
     }
 
@@ -287,8 +286,8 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
   }
 
   def mBoolean {
-
-
+    val m = matchSymbol(Token.True) orElse matchSymbol(Token.False)
+    m.map(t => emit(t))
   }
 
   def mString {
@@ -313,6 +312,25 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
     else
       consume
   }
+
+  def matchSymbol(token:TokenSymbol) : Option[TokenSymbol] = {
+    var cursor = 0
+    val text = token.symbol
+    while(cursor <= text.length) {
+      val expected = text.charAt(cursor)
+      val c = scanner.LA(cursor+1)
+      if(c != expected) {
+        return None
+      }
+      cursor += 1
+    }
+    while(cursor > 0) {
+      scanner.consume
+      cursor -= 1
+    }
+    Some(token)
+  }
+
 
   def skipWhiteSpaces {
     mWhiteSpace_s;
@@ -388,11 +406,13 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
           case _ => transit(Token.Comma, state)
         }
       case '"' => mString; emitString(Token.String)
-      case '@' => noTransition(c)
-      case '<' => noTransition(c)
+//      case '@' => noTransition(c)
+//      case '<' => noTransition(c)
       case '>' => noTransition(c)
       case '[' => noTransition(c)
       case ']' => noTransition(c)
+      case '{' => noTransition(c)
+      case '}' => noTransition(c)
       case '?' => noTransition(c)
       case '*' => noTransition(c)
       case '+' =>

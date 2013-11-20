@@ -38,9 +38,9 @@ object Token extends Logger {
 
   object Integer extends TokenType
   object Real extends TokenType
-  object True extends TokenType
-  object False extends TokenType
-  object Null extends TokenType
+  object True extends TokenSymbol("true")
+  object False extends TokenSymbol("false")
+  object Null extends TokenSymbol("null")
   object DataLine extends TokenType
   object BlankLine extends TokenType
   object NodeValue extends TokenType
