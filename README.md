@@ -225,12 +225,13 @@ If your schema of the data becomes stable, you should define a record schema to 
 127.0.0.1  -  frank  [10/Oct/2000:13:55:36 -0700] GET /apache_pb.gif HTTP/1.0 200 2326  http://www.example.com/start.html Mozilla/4.08 [en] (Win98; I ;Nav)
 ```
 
-You can split the above weblog into schema and log record files:
+You can split the above weblog into a schema and a log record files:
 
+With context information, you can enhance the data description. 
 `weblog.silk`
 ```
 %record weblog - host, ident, user, time, req, status, size:int, referer, ua
->context - description:"Imported from Apache Logs", server:sx03
+>note - description:"Imported from Apache Logs", server:sx03
 -weblog
 %import "weblog.tsv"
 ```
