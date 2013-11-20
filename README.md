@@ -113,7 +113,7 @@ C	coconut
 2013-11-20	debug	{result:"success", elapsed time:12.3}
 ```
 
-It is equivalent to write as follows:
+This is equivalent to write as follows:
 ```
 -log
  -date:2013-11-20
