@@ -1,7 +1,7 @@
 Silk Text Format
 ====
 
-Silk text format is a compact columnar data format for structured data.
+Silk text format is a compact data format for describing structured data.
 
 ## Specification  (draft)
 
