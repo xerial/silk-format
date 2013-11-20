@@ -23,9 +23,11 @@ If no type is specified in a record definition, the default data type becomes `s
 * `double`
 * `boolean`
 * `array[A]` (fixed-length array of type A)
+
 ```
-%record (id:int, name, phone*)
+%record person - id:int, name, phone*
 ```
+
 * `map[K, V]` (K -> V: key-value pair)
 * `seq[A]` (sequence of data of type A)
 * `json`
