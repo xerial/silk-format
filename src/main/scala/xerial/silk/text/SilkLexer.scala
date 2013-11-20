@@ -354,7 +354,7 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
     //    case '>' => consume; emit(Token.SeqNode); state = NODE_NAME
     case '#' => consume; matchUntilEOL; emitWithText(Token.LineComment)
     case '%' => consume; emit(Token.Preamble); state = QNAME
-    case '@' => consume; emit(Token.At); state = QNAME
+    case '@' => matchUntilEOL; emitWithText(Token.DataLineWithType)
     case LineReader.EOF => emit(Token.BlankLine)
     case '\\' =>
       val c2 = scanner.LA(2)
@@ -406,8 +406,7 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
           case _ => transit(Token.Comma, state)
         }
       case '"' => mString; emitString(Token.String)
-//      case '@' => noTransition(c)
-//      case '<' => noTransition(c)
+      case '<' => noTransition(c)
       case '>' => noTransition(c)
       case '[' => noTransition(c)
       case ']' => noTransition(c)
@@ -459,7 +458,7 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
   }
 
   def mName {
-    mUntil(isValueChar)
+    mUntil(isNameChar)
     emitTrimmed(Token.Name)
   }
 

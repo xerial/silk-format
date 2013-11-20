@@ -50,10 +50,14 @@ class SilkLexerTest extends SilkTextSpec {
   }
 
   "SilkLexer" should {
-    "parse preamble" in {
+    "parse preamble" taggedAs("preamble") in {
       parse("""%silk - version:1.0""")
-
+      parse("""%silk(version:1.0)""")
+      parse("""%import - file:header.silk""")
+      parse("""# comment line""")
+      parse(""" # comment line. Arbitrary text can be described here ~@!-$#@*&(%!""")
     }
+
 
     "parse node" in {
       parse("""-person - id:0, name:leo""")
@@ -62,11 +66,18 @@ class SilkLexerTest extends SilkTextSpec {
       parse("""-score -point:0.234 """)
     }
 
-    "parse record" in {
+    "parse record" taggedAs("record") in {
       parse("""%record person - id:int, name""")
-      parse("""%record fasta - name, description, sequence:stream[string]""")
+      parse("""%record fasta - name, description, sequence:seq[string]""")
+      parse("""%record embed - _:person, address:string*""")
+    }
+
+    "parse data line" taggedAs("line") in {
+      parse("10\tABC")
+      parse("@sam\t10\tABC")
 
     }
+
 
 
   }
