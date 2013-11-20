@@ -176,8 +176,7 @@ descriptions, etc. that need to be edited by hand.
 
 ### Import statment
 
-When silk format becomes large, or you need to share the schema definition, use `import` to 
-include another silk data.
+Importing another silk data via `import` statement.
 
 `record.silk`
 ```
@@ -187,7 +186,6 @@ include another silk data.
 
 ```
 %import "record.silk"
-
 -person
 1	leo
 2	yui
