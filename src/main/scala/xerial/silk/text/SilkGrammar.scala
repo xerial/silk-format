@@ -21,7 +21,8 @@ object SilkGrammar extends Grammar with Logger {
   "preambleParam" := Name ~ option(Colon ~ "preambleParamValue")
   "preambleParamValue" := "value" | "typeName"
   "typeName" := QName ~ option(LSquare ~ oneOrMore(QName, Comma) ~ RSquare)
-  "node" := option(Indent) ~ Name ~ option("nodeParams") ~ option("nodeParamSugar" | "nodeParams")
+  "node" := option(Indent) ~ Hyphen ~ Name ~ option("nodeParams") ~ option("nodeParamSugar" | "nodeParams")
+  "context" := option(Indent) ~ RSquare ~ Name ~ option("nodeParams") ~ option("nodeParamSugar" | "nodeParams")
   "nodeParamSugar" := Separator ~ repeat("param", Comma)
   "nodeParams" := LParen ~ repeat("param", Comma) ~ RParen ~ option(Colon ~ NodeValue)
   "param" := Name ~ option(Colon ~ "value")
