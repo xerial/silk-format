@@ -209,3 +209,20 @@ Context line starting with `>` is a meta data for annotating or grouping records
 @info 2013-11-20	client has started
 @info 2013-11-20	client sending a task to server
 ```
+
+### Schema-less data
+
+If no record name or schema is specified, silk parses each data line as a tab-separated record of json. 
+```
+host:127.0.0.1  ident:- user:frank  time:"[10/Oct/2000:13:55:36 -0700]" req:"GET /apache_pb.gif HTTP/1.0" status:"200"  size:2326 referer:"http://www.example.com/start.html" ua:"Mozilla/4.08 [en] (Win98; I ;Nav)"
+```
+
+If your schema of the data becomes stable, you should define a record schema to create compact records:
+
+```
+%record weblog - host, ident, user, time, req, status, size:int, referer, ua
+-weblog
+127.0.0.1  -  frank  [10/Oct/2000:13:55:36 -0700] GET /apache_pb.gif HTTP/1.0 200 2326  http://www.example.com/start.html Mozilla/4.08 [en] (Win98; I ;Nav)
+```
+
+
