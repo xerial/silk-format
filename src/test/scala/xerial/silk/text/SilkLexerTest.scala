@@ -48,6 +48,11 @@ class SilkLexerTest extends SilkTextSpec {
     val t = SilkLexer.parseLine(silk)
     debug(t.mkString("\n"))
   }
+  def parseJson(json:String) = {
+    val t = SilkLexer.parseJSON(json)
+    debug(t.mkString("\n"))
+  }
+
 
   "SilkLexer" should {
     "parse preamble" taggedAs("preamble") in {
@@ -75,9 +80,13 @@ class SilkLexerTest extends SilkTextSpec {
     "parse data line" taggedAs("line") in {
       parse("10\tABC")
       parse("@sam\t10\tABC")
-
     }
 
+    "parse json" taggedAs("json") in {
+      parseJson("{id:1, name:leo}")
+      parseJson("[0, 1, 2]")
+      parseJson("[true, false, true]")
+    }
 
 
   }
