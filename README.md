@@ -1,8 +1,8 @@
 Silk Text Format
 ====
 
-Silk text format is a compact and flexible columnar data format.
- 
+Silk text format is a compact columnar data format for structured data.
+
 ## Specification  (draft)
 
 ### Comment-line
@@ -103,14 +103,14 @@ C	coconut
 ```
 
 
-#### Embedding JSON in a column
+#### Embedding (extended) JSON in a column
 
 ```
 %record log(date, level, param:json)
 
 -log
-2013-11-20	info	{"message":"hello silk"}
-2013-11-20	debug	{"result":"success", "elapsed time":12.3}
+2013-11-20	info	{message:"hello silk"}
+2013-11-20	debug	{result:"success", elapsed time:12.3}
 ```
 
 It is equivalent to write as follows:
