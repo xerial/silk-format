@@ -192,13 +192,12 @@ Importing another silk data via `import` statement.
 Context line starting with `>` is a meta data for annotating or grouping records.
 
 ```
->server - name:sv01, type:server log
 -log
+>server - name:sv01, type:server log
 @info 2013-11-20	system started
 @info 2013-11-20	received a task request
 @error 2013-11-20	error occurred	NullPointerException
 >client - name:sv100, type:client log
--log
 @info 2013-11-20	client has started
 @info 2013-11-20	client sending a task to server
 ```
