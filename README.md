@@ -52,8 +52,8 @@ If no type is specified in a record definition, the default data type becomes `s
 * Map type `map[K,V]`
 
 ```
-%record property:map[string, int]
--property 
+%record symbolTable:map[string, int]
+-symbolTable
 A 0
 B 1
 C 2
