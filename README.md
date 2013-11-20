@@ -27,8 +27,8 @@ Specifies silk format version
 # Detailed definition
 %record person(id:int, name:string)
 
-# Simplified syntax. You can use `-` instead of wrapping with parentheses. 
-# If type name is ommitted, the default is string type
+# Simplified syntax. You can use `-` instead of wrapping parameters with parentheses. 
+# If the type name is ommitted, the default is string type
 %record person - id:int, name
 ```
 
@@ -41,15 +41,34 @@ If no type is specified in a record definition, the default data type becomes `s
 * `float`
 * `double`
 * `boolean`
-* `array[A]` (fixed-length array of type A)
-
+* Array type
 ```
+%record person - id:int, name, phone:string*
+# string tyep can be omitted
 %record person - id:int, name, phone*
-```
 
-* `map[K, V]` (K -> V: key-value pair)
-* `seq[A]` (sequence of data of type A)
+# Array of double type
+%record point - value:double[2]
+```
+* Map type
+```
+%record property:map[string, int]
+-property 
+A	  0
+B	  1
+C	  2
+```
+* Stream type. 
+  * Uses when the length of array is large
+```
+%record read - qname, flag:int, chr:alnum, start:int, score:int, cigar, mname, mstart:int, isize:int, qseq, qv, tag:_
+-read
+read_28833_29006_6945        99        chr20        28833        20	10M1D25M        =        28993        195	AGCTTAGCTAGCTACCTATATCTTGGTCTTGGCCG        <<<<<<<<<<<<<<<<<<<<<:<9/,&,22;;<<< {MF:130, Nm:1, H0:0, H1:0, RG:L1}
+read_28701_28881_323b        147        chr20        28834        30	35M        =        28701        -168	ACCTATATCTTGGCCTTGGCCGATGCGGCCTTGCA        <<<<<;<<<<7;:<<<6;<<<<<<<<<<<<7<<<<	{MF:18, Nm:0, H0:1, H1:0, RG:L2}
+```
+ 
 * `json`
+* `optional`
 
 ### Line format
 
