@@ -48,6 +48,7 @@ If no type is specified in a record definition, the default data type becomes `s
 %record person - id:int, name, phone*
 
 # Array of double type
+```
 %record point - value:double[2]
 ```
 * Map type
