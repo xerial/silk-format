@@ -228,6 +228,7 @@ If your schema of the data becomes stable, you should define a record schema to 
 You can split the above weblog into schema and log record files:
 
 With context information, you can enhance the data description. 
+
 `weblog.silk`
 ```
 %record weblog - host, ident, user, time, req, status, size:int, referer, ua
