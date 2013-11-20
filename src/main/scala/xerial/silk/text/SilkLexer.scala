@@ -247,7 +247,17 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
       case '"' => mString
       case c if isDigit(c) => mNumber
       case '-' if isDigit(scanner.LA(2)) => mNumber
+      case _ => mValue
+    }
+
+  }
+
+  def mValue {
+    LA1 match {
+      case c if isDigit(c) => mNumber
+      case '-' if isDigit(scanner.LA(2)) => mNumber
       case _ =>
+        // Boolean, Null
         val booleanOrNull = matchSymbol(Token.True) orElse
           matchSymbol(Token.False) orElse
           matchSymbol(Token.Null)
@@ -258,8 +268,6 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
     }
 
   }
-
-
 
 
   def mHexDigit {
@@ -317,11 +325,6 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
       case '.' => consume; mDigit_p; mExp; emitWithText(Token.Real)
       case _ => if (mExp) emitWithText(Token.Real) else emitWithText(Token.Integer)
     }
-  }
-
-  def mBoolean {
-    val m = matchSymbol(Token.True) orElse matchSymbol(Token.False)
-    m.map(t => emit(t))
   }
 
   def mString {
@@ -456,7 +459,7 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
           case _ => emit(Token.Plus)
         }
       case LineReader.EOF =>
-      case _ => mName
+      case _ => mValue
     }
   }
 

@@ -64,7 +64,7 @@ class SilkLexerTest extends SilkTextSpec {
     }
 
 
-    "parse node" in {
+    "parse node" taggedAs("node") in {
       parse("""-person - id:0, name:leo""")
       parse("""  -person(id:0, name:"leo")""")
       parse("""  -log(message:"hello world") """)
@@ -86,6 +86,7 @@ class SilkLexerTest extends SilkTextSpec {
       parseJson("{id:1, name:leo}")
       parseJson("[0, 1, 2]")
       parseJson("[true, false, true]")
+      parseJson("""{id:1, name:leo, address:{city:Tokyo, country:"JP"}""")
     }
 
 
