@@ -113,7 +113,7 @@ C	coconut
 2013-11-20	debug	{"result":"success", "elapsed time":12.3}
 ```
 
-It is equivalent to write as:
+It is equivalent to write as follows:
 ```
 -log
  -date:2013-11-20
@@ -151,7 +151,7 @@ It is equivalent to write as:
 
 ```
 %record log - date, message
-# Embedeing log record parameters into info/error records
+# Embedding log record parameters into info/error records
 %record info: _:log
 %record error - _:log, cause
 
@@ -160,12 +160,12 @@ It is equivalent to write as:
 @error log	2013-11-20	error occurred	NullPointerException
 ```
 
-When the line starts with `@`, the first column is a type description. The remaining part is tab-separated values.
+When the line starts with `@`, the first column is a type description. The remaining part is tab-separated values of the collesponding type.
 
-### Indantation format
+### Indentation format
 
 A more human readable data description, suited to configuration files, data
-descriptions, etc. 
+descriptions, etc. that need to be edited by hand.
 
 ```
 -person
