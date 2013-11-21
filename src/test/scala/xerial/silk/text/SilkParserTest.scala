@@ -31,8 +31,6 @@ package xerial.silk.text
 class SilkParserTest extends SilkTextSpec {
 
   import SilkSample._
-  import SilkGrammar._
-  import Token._
 
   def p(silk:String) = {
     val r = SilkGrammar.parse("silk", silk)
