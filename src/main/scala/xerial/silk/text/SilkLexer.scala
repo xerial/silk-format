@@ -231,29 +231,28 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
       case 'r' => consume
       case 't' => consume
       case 'u' => for (i <- 0 until 4) sHexDigit
-      case _ => error("non escape sequence char: %s".format(LA1.toChar))
+      case _ => error(s"non escape sequence char: ${LA1.toChar}")
     }
   }
 
   def mJSON {
     skipWhiteSpaces
-    LA1 match {
-      case '{' => consume; emit(Token.LBrace)
-      case '}' => consume; emit(Token.RBrace)
-      case '[' => consume; emit(Token.LBracket)
-      case ']' => consume; emit(Token.RBracket)
-      case ':' => consume; emit(Token.Colon)
-      case ',' => consume; emit(Token.Comma)
-      case '"' => mString
-      case c if isDigit(c) => mNumber
-      case '-' if isDigit(scanner.LA(2)) => mNumber
+    val c = LA1
+    def ok = { consume; emit(c) }
+    c match {
+      case '{' => ok
+      case '}' => ok
+      case '[' => ok
+      case ']' => ok
+      case ':' => ok
+      case ',' => ok
       case _ => mValue
     }
-
   }
 
   def mValue {
     LA1 match {
+      case '"' => mString
       case c if isDigit(c) => mNumber
       case '-' if isDigit(scanner.LA(2)) => mNumber
       case _ =>
@@ -446,7 +445,6 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
           case ATTRIBUTE_VALUE => transit(Token.Comma, ATTRIBUTE_NAME)
           case _ => transit(Token.Comma, state)
         }
-      case '"' => mString
       case '<' => noTransition(c)
       case '>' => noTransition(c)
       case '[' => noTransition(c)
