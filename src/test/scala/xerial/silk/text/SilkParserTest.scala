@@ -35,8 +35,20 @@ class SilkParserTest extends SilkTextSpec {
   def p(silk:String) {
     debug(s"parsing $silk")
     val r = SilkGrammar.parse("silk", silk)
-    if(r.isLeft) {
-      fail(s"parse error:\n$silk")
+
+    def posCursor(pos:Int) = {
+      val b = new StringBuilder
+      for(i <- 0 until pos-1)
+        b.append(' ')
+      b.append('^')
+      b.result
+    }
+    r match {
+      case Left(SilkParseError(posInLine, message)) =>
+        fail(s"${r.left.get}\n$silk\n${posCursor(posInLine)}")
+      case Left(e) =>
+        fail(s"${r.left.get}\n$silk\n")
+      case _ =>
     }
   }
 
@@ -48,9 +60,9 @@ class SilkParserTest extends SilkTextSpec {
 
   "SilkParser" should {
     "parse preambles" taggedAs("preamble") in {
-      p("""%silk - version:1.0""")
-      p("""%silk(version:1.0)""")
-      p("""%silk - version:1.0, encoding:utf-8""")
+      p("""%silk - version:"1.0"""")
+      p("""%silk(version:"1.0")""")
+      p("""%silk - version:"1.0", encoding:"utf-8"""")
     }
 
     "parse records" in {
@@ -59,14 +71,14 @@ class SilkParserTest extends SilkTextSpec {
     }
 
     "report errors" in {
-      pe("""%silk version:2.0""") shouldBe 'left
+      pe("""%silk version:"1.0"""") shouldBe 'left
     }
 
     "parse nodes" taggedAs("node") in {
       p("-person")
       p("-log.debug")
-      p("-person - id:1, name:leo")
-
+      p("""-person - id:1, name:"leo"""")
+      p("""-log.debug - time:"2013-12-15 23:38:31 +0900", record:"log message" """)
 
     }
 

@@ -19,7 +19,7 @@ Preamble line starts with `%`:
 #### Header 
 Specifies a silk format version.
 ```
-%silk - version:1.0
+%silk - version:"1.0"
 ```
 #### Record schema definition
 
@@ -175,7 +175,7 @@ Importing another silk data via `import` statement.
 
 `record.silk`
 ```
-%silk version:1.0
+%silk version:"1.0"
 %record person - id:int, name
 ```
 

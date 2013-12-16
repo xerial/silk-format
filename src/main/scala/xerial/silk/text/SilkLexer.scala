@@ -166,7 +166,10 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
     posInLine += 1
   }
 
-  private def emit(token: SilkToken): Unit = tokenQueue += token
+  private def emit(token: SilkToken): Unit = {
+    trace(s"emit $token")
+    tokenQueue += token
+  }
   private def emit(t: TokenType): Unit = emit(Token(scanner.markStart, t))
   private def emit(tokenChar: Int): Unit = emit(Token.toSymbol(tokenChar))
   private def emitWithText(t: TokenType): Unit = emitWithText(t, scanner.selected)
@@ -502,21 +505,21 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
     sQNameFirst
     val len = sUntil(isQNameChar)
     if(len == 0)
-      error(s"invalid token: ${LA1.toChar} pos:${posInLine}")
+      error(s"invalid QName char: ${LA1.toChar} pos:${posInLine}")
     emitTrimmed(Token.QName)
   }
 
   def mName {
     val len = sUntil(isNameChar)
     if(len == 0)
-      error(s"invalid token: ${LA1.toChar} pos:${posInLine}")
+      error(s"invalid Name char: ${LA1.toChar} pos:${posInLine}")
     emitTrimmed(Token.Name)
   }
 
   def mPName {
     val len = sUntil(isPNameChar)
     if(len == 0)
-      error(s"invalid token: ${LA1.toChar} pos:${posInLine}")
+      error(s"invalid PName char: ${LA1.toChar} pos:${posInLine}")
     emitTrimmed(Token.PName)
   }
 

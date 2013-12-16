@@ -153,15 +153,21 @@ trait Grammar extends Logger {
   }
 
   def parse(ruleName:String, silk:String) = {
-    val lexer = SilkLexer.tokenStream(silk)
-    val p = new GrammarParser(lexer)
-    val r = TreeRef(ruleName).eval(p)
-    if(r.isRight && p.LA1.tokenType != Token.EOF) {
-      // Report errors when non-consumed tokens exists
-      Left(NoMatch)
+    try {
+      val lexer = SilkLexer.tokenStream(silk)
+      val p = new GrammarParser(lexer)
+      val r = TreeRef(ruleName).eval(p)
+      if(r.isRight && p.LA1.tokenType != Token.EOF) {
+        // Report errors when non-consumed tokens exists
+        Left(NoMatch)
+      }
+      else
+        r
     }
-    else
-      r
+    catch {
+      case pe:SilkParseError => Left(pe)
+      case e:Exception => throw e
+    }
   }
 
   def repeat(expr: Tree, separator: TokenType): Tree = Repeat(expr, separator)
