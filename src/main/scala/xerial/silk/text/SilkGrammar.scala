@@ -26,7 +26,7 @@ object SilkGrammar extends Grammar with Logger {
   "nodeParamSugar" := Separator ~ repeat("param", Comma)
   "nodeParams" := LParen ~ repeat("param", Comma) ~ RParen ~ option(Colon ~ NodeValue)
   "param" := Name ~ option(Colon ~ "value")
-  "value" := NodeValue | Name | QName | Token.String | Integer | Real | "boolean" | Null | "tuple"
+  "value" := NodeValue | Name | QName | PName | Token.String | Integer | Real | "boolean" | Null | "tuple"
   "tuple" := LParen ~ repeat("value", Comma) ~ RParen
   "boolean" := True | False
 

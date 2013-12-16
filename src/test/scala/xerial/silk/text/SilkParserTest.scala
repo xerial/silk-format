@@ -32,7 +32,15 @@ class SilkParserTest extends SilkTextSpec {
 
   import SilkSample._
 
-  def p(silk:String) = {
+  def p(silk:String) {
+    debug(s"parsing $silk")
+    val r = SilkGrammar.parse("silk", silk)
+    if(r.isLeft) {
+      fail(s"parse error:\n$silk")
+    }
+  }
+
+  def pe(silk:String) = {
     val r = SilkGrammar.parse("silk", silk)
     r
   }
@@ -40,25 +48,26 @@ class SilkParserTest extends SilkTextSpec {
 
   "SilkParser" should {
     "parse preambles" taggedAs("preamble") in {
-      p("""%silk - version:1.0""") shouldBe 'right
-      p("""%silk(version:1.0)""") shouldBe 'right
-      p("""%silk - version:1.0, encoding:utf-8""") shouldBe 'right
+      p("""%silk - version:1.0""")
+      p("""%silk(version:1.0)""")
+      p("""%silk - version:1.0, encoding:utf-8""")
     }
 
     "parse records" in {
-      p(r0) shouldBe 'right
-      p(r1) shouldBe 'right
+      p(r0)
+      p(r1)
     }
 
     "report errors" in {
-      p("""%silk version:2.0""") shouldBe 'left
-
+      pe("""%silk version:2.0""") shouldBe 'left
     }
 
-    "build parse trees" in {
-      //tree(SilkParser.expr)
-      //tree(SilkParser.value)
-      //tree(SilkParser.preamble)
+    "parse nodes" taggedAs("node") in {
+      p("-person")
+      p("-log.debug")
+      p("-person - id:1, name:leo")
+
+
     }
 
   }

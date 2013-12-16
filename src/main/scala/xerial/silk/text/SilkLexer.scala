@@ -262,7 +262,11 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
           sSymbol(Token.Null)
         booleanOrNull match {
           case Some(t) => emit(t)
-          case None => mName
+          case None =>
+            state match {
+              case ATTRIBUTE_VALUE => mPName
+              case _ => mName
+            }
         }
     }
 
@@ -468,7 +472,8 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
   // qname first:  Alphabet | Dot | '_' | At | Sharp
   private def isQNameFirst(c: Int) = (c == '@' || c == '#' || c == '.' || c == '_' || isAlphabet(c))
   private def isQNameChar(c: Int) = (c == '.' || c == '_' || isAlphabet(c) || isDigit(c))
-  private def isNameChar(c: Int) = c == ' ' || c == '-' || isQNameChar(c)
+  private def isNameChar(c: Int) = c == ' '  || isQNameChar(c)
+  private def isPNameChar(c: Int) = c == '-' || isNameChar(c)
   private def isValueChar(c:Int) = c != '(' && c != ')' && c != ',' && c != ':' && c != '@' && c != '#' && c != '"'
 
   def sQNameFirst = {
@@ -506,6 +511,13 @@ class SilkLineLexer(line: CharSequence, initialState: SilkLexerState) extends Lo
     if(len == 0)
       error(s"invalid token: ${LA1.toChar} pos:${posInLine}")
     emitTrimmed(Token.Name)
+  }
+
+  def mPName {
+    val len = sUntil(isPNameChar)
+    if(len == 0)
+      error(s"invalid token: ${LA1.toChar} pos:${posInLine}")
+    emitTrimmed(Token.PName)
   }
 
 

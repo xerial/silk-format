@@ -34,6 +34,7 @@ object Token extends Logger {
   object NewLine extends TokenType
   object QName extends TokenType
   object Name extends TokenType
+  object PName extends TokenType
   object String extends TokenType
 
   object Integer extends TokenType
